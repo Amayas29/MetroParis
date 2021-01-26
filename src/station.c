@@ -69,7 +69,7 @@ void destroyListStations(ListStations *list) {
     }
 }
 
-int numberStations(ListStations *list) {
+int getNumberStations(ListStations *list) {
     int number = 0;
     for(; list; list = list->next, number++);
     return number;

@@ -19,7 +19,7 @@ void addPath(Station *station, Path *path);
 void destroyStation(Station *station);
 Station *addStationToList(ListStations **list, char *stationName);
 void destroyListStations(ListStations *list);
-int numberStations(ListStations *list);
+int getNumberStations(ListStations *list);
 Station *getStation(ListStations *list, char *stationName);
 
 #endif
