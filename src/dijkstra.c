@@ -1,26 +1,85 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "dijkstra.h"
 
-ListStations *dijkstraDistance(Station **stations, Line **lines, int src, int dest) {
-    return _djikstra(stations, lines, src, dest, 0);
+static ListStations *_djikstra(Station **stations, int numberStations, Line **lines, int src, int dest, int time);
+static Node *createNode(int current, int previous, int value);
+static Node *_getMinimum(Node *queue);
+static Node *_addToQueue(Node *queue, Node *node);
+static Node *_removeFromQueue(Node *queue, int current);
+static Node *_getNode(Node *save, int curr);
+
+ListStations *dijkstraDistance(Station **stations, int numberStations, Line **lines, int src, int dest) {
+    return _djikstra(stations, numberStations, lines, src, dest, 0);
 }
 
-ListStations *dijkstraTime(Station **stations, Line **lines, int src, int dest) {
-    return _djikstra(stations, lines, src, dest, 1);
+ListStations *dijkstraTime(Station **stations, int numberStations, Line **lines, int src, int dest) {
+    return _djikstra(stations, numberStations, lines, src, dest, 1);
 }
 
-static ListStations *_djikstra(Station **stations, Line **lines, int src, int dest, int time) {
+static ListStations *_djikstra(Station **stations, int numberStations, Line **lines, int src, int dest, int time) {
+    if(!stations || !lines) return NULL;
+
     ListStations *djiksPath = NULL;
     Node *queue = NULL;
     Node *save = NULL;
-    
+    Path *paths = NULL;
+    int *alreadyTreated = malloc(sizeof(int) * numberStations);
+    if(!alreadyTreated) return NULL;
+
+    for(int i = 0; i < numberStations; i++)
+        alreadyTreated[i] = 0;
+
     save = _addToQueue(save, createNode(src, -1, 0));
-    queue = _addToQueue(save, createNode(src, -1, 0));
+    queue = _addToQueue(queue, createNode(src, -1, 0));
+    Node *min = NULL;
+    int value = 0;
 
     while(1) {
+        min = _getMinimum(queue);
+        printf("%d\n", min->current);
+        if(!min || min->current == dest) break;
 
+        alreadyTreated[min->current] = 1;
+        paths = stations[min->current]->paths;
+
+        for(; paths; paths = paths->next) {
+
+            if(time == 1)
+                value = lines[paths->correspondingLine - 1]->averageTime;
+            else
+                value = lines[paths->correspondingLine - 1]->averageDist;
+
+            if(alreadyTreated[paths->nextStation] == 0) {
+                queue = _addToQueue(queue, createNode(paths->nextStation, min->current, min->value + value));
+                save = _addToQueue(save, createNode(paths->nextStation, min->current, min->value + value));
+            }
+        }
+        queue = _removeFromQueue(queue, min->current);
     }
 
+    if(min->current == dest) {
+        int curr = min->current;
+        while(curr != -1) {
+            addStationToList(&djiksPath, stations[curr]->name);
+            curr = _getNode(save, curr)->previous;
+        }
+    }
+
+    Node *tmp = NULL;
+    while(queue) {
+        tmp = queue->next;
+        free(queue);
+        queue = tmp;
+    }
+
+    while(save) {
+        tmp = save->next;
+        free(save);
+        save = tmp;
+    }
+
+    free(alreadyTreated);
     return djiksPath;
 }
 
@@ -36,32 +95,24 @@ static Node *createNode(int current, int previous, int value) {
     return node;
 }
 
-static int _getMinimum(Node *queue, Station **stations, Line **lines, int time) {
-    int min = -1;
-    int minValue = 0;
-    int value;
+static Node *_getMinimum(Node *queue) {
+    Node *min = NULL;
 
     for(; queue; queue = queue->next) {
-        if(time == 1)
-            value = lines[stations[queue->current]->id]->averageTime;
-        else
-            value = lines[stations[queue->current]->id]->averageDist;
+    
+        if(!min)
+            min = queue;
 
-        if(min = -1) {
-            min = queue->current;
-            minValue = value;
-        }
-        
-        if(value < minValue) {
-            min = queue->current;
-            minValue = value;
-        }
+        else if(queue->value < min->value)
+            min = queue;
     }
 
     return min;
 }
 
 static Node *_addToQueue(Node *queue, Node *node) {
+    if(!node) return queue;
+
     Node *curr = queue;
 
     for(; curr; curr=curr->next)
@@ -95,4 +146,13 @@ static Node *_removeFromQueue(Node *queue, int current) {
     tmp->next = del->next;
     free(del);
     return queue;
+}
+
+static Node *_getNode(Node *save, int curr) {
+    for(; save; save = save->next) {
+        if(save->current == curr)  
+            return save;
+    }
+
+    return NULL;
 }

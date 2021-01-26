@@ -19,3 +19,7 @@ Station **buildMetroStructure(ListStations *list, int *numberStations) {
 
     return tab;
 }
+
+void reducePath(ListStations *list) {
+    
+}

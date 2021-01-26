@@ -10,7 +10,7 @@ typedef struct _node {
     struct _node *next;
 } Node;
 
-ListStations *dijkstraTime(Station **stations, Line **lines, int src, int dest);
-ListStations *dijkstraDistance(Station **stations, Line **lines, int src, int dest);
+ListStations *dijkstraTime(Station **stations, int numberStations, Line **lines, int src, int dest);
+ListStations *dijkstraDistance(Station **stations, int numberStations, Line **lines, int src, int dest);
 
 #endif
