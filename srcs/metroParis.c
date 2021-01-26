@@ -9,8 +9,8 @@ int main(void) {
     Line **lines = readLines("../ressources/lines.db", &numbre, &list);
     if(lines) {
 
-        //for(int i = 0; i < numbre; i++)
-            //printLigne(lines[ i ]);
+        for(int i = 0; i < numbre; i++)
+            printLigne(lines[ i ]);
 
         for(int i = 0; i < numbre; i++)
             destoryLine(lines[ i ]);
