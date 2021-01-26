@@ -25,8 +25,6 @@ Line *createLine(char *name, int id, int averageDist, int averageTime) {
     line->id = id;
     line->averageDist = averageDist;
     line->averageTime = averageTime;
-    line->stations = NULL;
-
     return line;
 }
 
@@ -36,7 +34,6 @@ void destoryLine(Line *line) {
         return;
 
     free(line->name);
-    destroyListStations(line->stations);
     free(line);
 }
 
@@ -91,7 +88,8 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
             fprintf(stderr, "Reading problem");
             continue;
         }
- 
+        // TODO if id > i donc deja existante fuat juste refresh
+
         lines[i] = createLine(lineName, id, avgDist, avgTime);
         for(j = 0; *(BUFFER+(j++)) != ':'; );
 
@@ -99,19 +97,14 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
         for(; *(BUFFER+j); ) {
             
             start = j;
-            while(*(BUFFER+j) && *(BUFFER+j) != '<' && *(BUFFER+j) != '-') j++;
+            while(*(BUFFER+j) && *(BUFFER+j) != '#' && *(BUFFER+j) != '|') j++;
             strncpy(stationName, BUFFER+start, j-start);
             stationName[j-start] = '\0';
 
             st = addStationToList(list, stationName);
-            ListStations *ls = malloc(sizeof(ListStations));
-            if(ls) {
-                ls->next = lines[ i ]->stations;
-                ls->station = st;
-                lines[ i ]->stations = ls;
-            }
-            
-            while(*(BUFFER+j) && (*(BUFFER+j) == '<' || *(BUFFER+j) == '>' || *(BUFFER+j) == '-')) j++;
+            // TODO ADD PATH
+
+            while(*(BUFFER+j) && (*(BUFFER+j) == '#' || *(BUFFER+j) == '|')) j++;
         }
         i++;
     }
