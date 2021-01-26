@@ -1,13 +1,13 @@
-# Application de métros
+# Subway application
 
 - *Version 1.0*
 - *2020*
 
-Cette application permet de rechercher le plus petit itinéraire entre deux station du métro parisien, elle est réalisée en C
+This application allows you to find the shortest route between two Paris metro stations, it is carried out in C
 
-# Fonctionnalités ; 
-- Recherche le plus petit itinéraire entre deux station 
+# Features ; 
+- Finds the shortest route between two stations
 
 # TODO :
-- Ajouter d'autres fonctionnalités au projet
-- Passer sur interface graphique
+- Add other features to the project
+- Switch to graphical interface
