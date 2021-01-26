@@ -45,7 +45,7 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
     *numberLines = -1;
     int id, avgTime, avgDist;
     char BUFFER[3000], lineName[100], stationName[100];
-    int start, j, k, len, i = 0;
+    int start, j, k, i = 0;
 
     FILE *f = fopen(fileName, "r");
     
@@ -79,20 +79,18 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
     }
 
     while(fgets(BUFFER, 3000, f) && i < *numberLines) {
-        len = strlen(BUFFER);
-        if(BUFFER[len - 1] == '\n')
-            len--;
-        BUFFER[len] = '\0';
+        BUFFER[strlen(BUFFER) - 1] = '\0';
 
         if(sscanf(BUFFER, " %d %s ( %d , %d ) : ", &id, lineName, &avgTime, &avgDist) != 4) {
             fprintf(stderr, "Reading problem");
             continue;
         }
 
-        if(id > i) // while
+        if(id < i+1)
             i--;
-
-        lines[i] = createLine(lineName, id, avgDist, avgTime);
+        else
+            lines[i] = createLine(lineName, id, avgDist, avgTime);
+        
         for(j = 0; *(BUFFER+(j++)) != ':'; );
 
         start = j;
@@ -105,22 +103,23 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
 
             st = addStationToList(list, stationName);
 
-            j++;
+            char nxt = *(BUFFER+j);
             if(!*(BUFFER+j)) continue;
 
-            char nxt = *(BUFFER+j);
-
+            j++;
             start = j;
             k = j;
+
             while(*(BUFFER+k) && *(BUFFER+k) != '#' && *(BUFFER+k) != '|') k++;
             strncpy(stationName, BUFFER+start, k-start);
             stationName[k-start] = '\0';
-
+         
             Station *next = addStationToList(list, stationName);
-            
-            addPath(st, createPath(next->id, i));
+     
+            addPath(st, createPath(next->id, lines[i]->id));
+ 
             if(nxt == '#')
-                addPath(next, createPath(st->id, i));
+                addPath(next, createPath(st->id, lines[i]->id));
         }
         i++;
     }

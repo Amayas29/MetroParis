@@ -35,8 +35,10 @@ Path *addPathList(Path *list, Path *new) {
     if(!new) return list;
     
     for(Path *curr = list; curr; curr = curr->next)
-        if(curr->nextStation == new->nextStation && curr->correspondingLine == new->correspondingLine)
+        if(curr->nextStation == new->nextStation && curr->correspondingLine == new->correspondingLine) {
+            destroyPaths(new);
             return list;
+        }
 
     new->next = list;
     return new;

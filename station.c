@@ -22,7 +22,10 @@ Station *createStation(int id, char *name) {
 }
 
 void addPath(Station *station, Path *path) {
-    if(!station) return;
+    if(!station) {
+        destroyPaths(path);
+        return;
+    }
     
     station->paths = addPathList(station->paths, path);
 }
@@ -38,11 +41,11 @@ void destroyStation(Station *station) {
 
 Station *addStationToList(ListStations **list, char *stationName) {
     if(!stationName) return NULL;
-    int id = 0;
 
+    int id = 0;
     ListStations *ls = *list;
     for(; ls; ls = ls->next, id++)
-        if(strcmp(ls->station->name, stationName))
+        if(strcmp(ls->station->name, stationName) == 0)
             return ls->station;
 
     ListStations *new = malloc(sizeof(ListStations));
