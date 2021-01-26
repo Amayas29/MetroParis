@@ -5,7 +5,7 @@
 
 This application allows you to find the shortest route between two Paris metro stations, it is carried out in C
 
-# Features ; 
+# Features :
 - Finds the shortest route between two stations
 
 # TODO :
