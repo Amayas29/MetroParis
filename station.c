@@ -36,23 +36,23 @@ void destroyStation(Station *station) {
     free(station);
 }
 
-ListStations *addStationToList(ListStations *list, char *stationName) {
-    if(!stationName) return list;
+Station *addStationToList(ListStations **list, char *stationName) {
+    if(!stationName) return NULL;
     int id = 0;
 
-    ListStations *ls = list;
+    ListStations *ls = *list;
     for(; ls; ls = ls->next, id++)
         if(strcmp(ls->station->name, stationName))
-            break;
-
-    if(id) return list;
+            return ls->station;
 
     ListStations *new = malloc(sizeof(ListStations));
-    if(!new) return list;
+    if(!new) return NULL;
 
     new->station = createStation(id, stationName);
-    new->next = list;
-    return new;
+    new->next = *list;
+    *list = new;
+    
+    return new->station;
 }
 
 void destroyListStations(ListStations *list) {
@@ -64,4 +64,18 @@ void destroyListStations(ListStations *list) {
         free(list);
         list = tmp;
     }
+}
+
+int numberStations(ListStations *list) {
+    int number = 0;
+    for(; list; list = list->next, number++);
+    return number;
+}
+
+Station *getStation(ListStations *list, char *stationName) {
+    for(; list; list = list->next)
+        if(strcmp(list->station->name, stationName) == 0)
+            return list->station;
+
+    return NULL;
 }

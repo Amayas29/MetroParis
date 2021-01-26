@@ -25,7 +25,8 @@ Line *createLine(char *name, int id, int averageDist, int averageTime) {
     line->id = id;
     line->averageDist = averageDist;
     line->averageTime = averageTime;
-    
+    line->stations = NULL;
+
     return line;
 }
 
@@ -35,6 +36,7 @@ void destoryLine(Line *line) {
         return;
 
     free(line->name);
+    destroyListStations(line->stations);
     free(line);
 }
 
@@ -56,6 +58,7 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
     }
 
     Line **lines = NULL;
+    Station *st = NULL;
 
     if(!fgets(BUFFER, 3000, f)) {
         fprintf(stderr, "Reading problem");
@@ -100,8 +103,14 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
             strncpy(stationName, BUFFER+start, j-start);
             stationName[j-start] = '\0';
 
-            *list = addStationToList(*list, stationName);
-
+            st = addStationToList(list, stationName);
+            ListStations *ls = malloc(sizeof(ListStations));
+            if(ls) {
+                ls->next = lines[ i ]->stations;
+                ls->station = st;
+                lines[ i ]->stations = ls;
+            }
+            
             while(*(BUFFER+j) && (*(BUFFER+j) == '<' || *(BUFFER+j) == '>' || *(BUFFER+j) == '-')) j++;
         }
         i++;

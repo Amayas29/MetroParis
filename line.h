@@ -8,6 +8,7 @@ typedef struct _line {
     int id;
     int averageDist;
     int averageTime;
+    ListStations *stations;
 } Line;
 
 Line *createLine(char *name, int id, int averageDist, int averageTime);

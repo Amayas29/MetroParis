@@ -3,6 +3,6 @@
 
 #include "line.h"
 
-Station **buildMetroStructure(Line **lines, int numberLines, int *numberStations);
+Station **buildMetroStructure(ListStations *list, int *number);
 
 #endif

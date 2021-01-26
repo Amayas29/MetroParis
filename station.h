@@ -17,7 +17,9 @@ typedef struct _listStations {
 Station *createStation(int id, char *name);
 void addPath(Station *station, Path *path);
 void destroyStation(Station *station);
-ListStations *addStationToList(ListStations *list, char *stationName);
+Station *addStationToList(ListStations **list, char *stationName);
 void destroyListStations(ListStations *list);
+int numberStations(ListStations *list);
+Station *getStation(ListStations *list, char *stationName);
 
 #endif
