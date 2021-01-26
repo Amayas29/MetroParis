@@ -4,7 +4,9 @@
 
 int main(void) {
     int numbre = 0;
-    Line **lines = readLines("lines.db", &numbre);
+    ListStations *list = NULL;
+
+    Line **lines = readLines("lines.db", &numbre, &list);
     if(lines) {
 
         for(int i = 0; i < numbre; i++)

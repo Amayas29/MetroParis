@@ -4,6 +4,7 @@
 #include "path.h"
 
 typedef struct _station {
+    int id;
     char *name;
     Path *paths;
 } Station;
@@ -13,10 +14,10 @@ typedef struct _listStations {
     struct _listStations *next;
 } ListStations;
 
-Station *createStation(char *name);
+Station *createStation(int id, char *name);
 void addPath(Station *station, Path *path);
 void destroyStation(Station *station);
-ListStations *addStationToList(ListStations *list, Station *station);
+ListStations *addStationToList(ListStations *list, char *stationName);
 void destroyListStations(ListStations *list);
 
 #endif

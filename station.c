@@ -3,7 +3,7 @@
 #include <string.h>
 #include "station.h"
 
-Station *createStation(char *name) {
+Station *createStation(int id, char *name) {
     if(!name) {
         fprintf(stderr, "The name of the station is not valid");
         return NULL;
@@ -15,6 +15,7 @@ Station *createStation(char *name) {
         return NULL;
     }
 
+    station->id = id;
     station->name = strdup(name);
     station->paths = NULL;
     return station;
@@ -35,13 +36,21 @@ void destroyStation(Station *station) {
     free(station);
 }
 
-ListStations *addStationToList(ListStations *list, Station *station) {
-    if(!station) return list;
+ListStations *addStationToList(ListStations *list, char *stationName) {
+    if(!stationName) return list;
+    int id = 0;
+
+    ListStations *ls = list;
+    for(; ls; ls = ls->next, id++)
+        if(strcmp(ls->station->name, stationName))
+            break;
+
+    if(id) return list;
 
     ListStations *new = malloc(sizeof(ListStations));
     if(!new) return list;
 
-    new->station = station;
+    new->station = createStation(id, stationName);
     new->next = list;
     return new;
 }

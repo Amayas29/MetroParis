@@ -25,8 +25,7 @@ Line *createLine(char *name, int id, int averageDist, int averageTime) {
     line->id = id;
     line->averageDist = averageDist;
     line->averageTime = averageTime;
-    line->stations = NULL;
-
+    
     return line;
 }
 
@@ -36,13 +35,15 @@ void destoryLine(Line *line) {
         return;
 
     free(line->name);
-    destroyListStations(line->stations);
     free(line);
 }
 
-Line **readLines(char *fileName, int *number) {
+Line **readLines(char *fileName, int *numberLines, ListStations **list) {
 
-    *number = -1;
+    if(!list) return NULL;
+
+    *list = NULL;
+    *numberLines = -1;
     int id, avgTime, avgDist;
     char BUFFER[3000], lineName[100], stationName[100];
     int start, j, len, i = 0;
@@ -62,22 +63,22 @@ Line **readLines(char *fileName, int *number) {
         return NULL;
     }
   
-    if(sscanf(BUFFER, " %d", number) != 1) {
-        *number = -1;
+    if(sscanf(BUFFER, " %d", numberLines) != 1) {
+        *numberLines = -1;
         fprintf(stderr, "Reading problem : The number of lines is not specified in the file");
         fclose(f);
         return NULL;
     }
 
-    lines = malloc(sizeof(Line *) * *number);
+    lines = malloc(sizeof(Line *) * *numberLines);
     if(lines == NULL) {
         fprintf(stderr, "Allocation problem");
-        *number = -1;
+        *numberLines = -1;
         fclose(f);
         return NULL;
     }
 
-    while(fgets(BUFFER, 3000, f) && i < *number) {
+    while(fgets(BUFFER, 3000, f) && i < *numberLines) {
         len = strlen(BUFFER);
         if(BUFFER[len - 1] == '\n')
             len--;
@@ -99,7 +100,7 @@ Line **readLines(char *fileName, int *number) {
             strncpy(stationName, BUFFER+start, j-start);
             stationName[j-start] = '\0';
 
-            addStation(lines[i], createStation(stationName));
+            *list = addStationToList(*list, stationName);
 
             while(*(BUFFER+j) && (*(BUFFER+j) == '<' || *(BUFFER+j) == '>' || *(BUFFER+j) == '-')) j++;
         }
@@ -110,15 +111,7 @@ Line **readLines(char *fileName, int *number) {
     return lines;
 }
 
-void addStation(Line *line, Station *station) {
-    if(!line) return;
-    line->stations = addStationToList(line->stations, station);
-}
-
 void printLigne(Line *line) {
     if(!line) return;
-
     printf("%s %d (%d, %d)\n", line->name, line->id, line->averageTime, line->averageDist);
-    for(ListStations *list = line->stations; list; list = list->next)
-        printf("\t - %s\n", list->station->name);
 }
