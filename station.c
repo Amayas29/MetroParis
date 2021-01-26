@@ -3,55 +3,56 @@
 #include <string.h>
 #include "station.h"
 
-Station *creerStation(char *nom) {
-    
-    if(!nom) {
-        fprintf(stderr, "Le nom de la stattion n'est pas valide");
+Station *createStation(char *name) {
+    if(!name) {
+        fprintf(stderr, "The name of the station is not valid");
         return NULL;
     }
 
     Station *station = malloc(sizeof(Station));
     if(!station) {
-        fprintf(stderr, "Probleme d'allocation !");
+        fprintf(stderr, "Allocation problem");
         return NULL;
     }
 
-    station->nom = strdup(nom);
-    station->suivant = NULL;
+    station->name = strdup(name);
+    station->paths = NULL;
     return station;
 }
 
-void detruireStation(Station **station) {
+void addPath(Station *station, Path *path) {
+    if(!station) return;
 
-    if(!station || !(*station))
-        return;
-    
-    for(Station *s = *station; s; ) {
-       Station *t = s;
-       s = s->suivant;
-       free(t->nom);
-       free(t);
-    }
-
-    *station = NULL;
+    station->paths = addPathList(station->paths, path);
 }
 
-void ajouterStationDansListe(Station **stations, char *stationNom) {
+void destroyStation(Station *station) {
 
-    if(!stations || !stationNom)
-        return;
-    
-    if(!*stations) {
-       *stations = creerStation(stationNom);
-       return;
-    }
+    if(!station) return;
 
-    for(Station *station = *stations; station ; station = station->suivant) {
-        if(strcmp(station->nom, stationNom) == 0)
-            return;
-        if(!station->suivant) {
-            station->suivant = creerStation(stationNom);
-            return;
-        }
+    free(station->name);
+    destroyPaths(station->paths);
+    free(station);
+}
+
+ListStations *addStationToList(ListStations *list, Station *station) {
+    if(!station) return list;
+
+    ListStations *new = malloc(sizeof(ListStations));
+    if(!new) return list;
+
+    new->station = station;
+    new->next = list;
+    return new;
+}
+
+void destroyListStations(ListStations *list) {
+
+    ListStations *tmp = NULL;
+    for(; list; ) {
+        tmp = list->next;
+        destroyStation(list->station);
+        free(list);
+        list = tmp;
     }
 }

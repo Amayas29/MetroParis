@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ligne.h"
+#include "line.h"
 
 int main(void) {
-    int nombre = 0;
-    Ligne **lignes = lireLignes("lignes.db", &nombre);
-    if(lignes) {
+    int numbre = 0;
+    Line **lines = readLines("lines.db", &numbre);
+    if(lines) {
 
-        for(int i = 0; i < nombre; i++)
-            printLigne(lignes[ i ]);
+        for(int i = 0; i < numbre; i++)
+            printLigne(lines[ i ]);
 
-        for(int i = 0; i < nombre; i++)
-            detruireLigne(&lignes[ i ]);
-        free(lignes);
+        for(int i = 0; i < numbre; i++)
+            destoryLine(lines[ i ]);
+        free(lines);
     }
     return 0;
 }

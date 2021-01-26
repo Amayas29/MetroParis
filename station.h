@@ -1,16 +1,22 @@
 #ifndef __STATION_H__
 #define __STATION_H__
 
-#include "chemin.h"
+#include "path.h"
 
 typedef struct _station {
-    char *nom;
-    struct _station *suivant;
+    char *name;
+    Path *paths;
 } Station;
 
-Station *creerStation(char *nom);
-void ajouterChemin(Station *station, Chemin *chemin);
-void detruireStation(Station **station);
-void ajouterStationDansListe(Station **stations, char *station);
+typedef struct _listStations {
+    Station *station;
+    struct _listStations *next;
+} ListStations;
+
+Station *createStation(char *name);
+void addPath(Station *station, Path *path);
+void destroyStation(Station *station);
+ListStations *addStationToList(ListStations *list, Station *station);
+void destroyListStations(ListStations *list);
 
 #endif
