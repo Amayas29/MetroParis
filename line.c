@@ -45,7 +45,7 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
     *numberLines = -1;
     int id, avgTime, avgDist;
     char BUFFER[3000], lineName[100], stationName[100];
-    int start, j, len, i = 0;
+    int start, j, k, len, i = 0;
 
     FILE *f = fopen(fileName, "r");
     
@@ -88,7 +88,9 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
             fprintf(stderr, "Reading problem");
             continue;
         }
-        // TODO if id > i donc deja existante fuat juste refresh
+
+        if(id > i) // while
+            i--;
 
         lines[i] = createLine(lineName, id, avgDist, avgTime);
         for(j = 0; *(BUFFER+(j++)) != ':'; );
@@ -102,9 +104,23 @@ Line **readLines(char *fileName, int *numberLines, ListStations **list) {
             stationName[j-start] = '\0';
 
             st = addStationToList(list, stationName);
-            // TODO ADD PATH
 
-            while(*(BUFFER+j) && (*(BUFFER+j) == '#' || *(BUFFER+j) == '|')) j++;
+            j++;
+            if(!*(BUFFER+j)) continue;
+
+            char nxt = *(BUFFER+j);
+
+            start = j;
+            k = j;
+            while(*(BUFFER+k) && *(BUFFER+k) != '#' && *(BUFFER+k) != '|') k++;
+            strncpy(stationName, BUFFER+start, k-start);
+            stationName[k-start] = '\0';
+
+            Station *next = addStationToList(list, stationName);
+            
+            addPath(st, createPath(next->id, i));
+            if(nxt == '#')
+                addPath(next, createPath(st->id, i));
         }
         i++;
     }

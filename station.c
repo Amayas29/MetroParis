@@ -23,7 +23,7 @@ Station *createStation(int id, char *name) {
 
 void addPath(Station *station, Path *path) {
     if(!station) return;
-
+    
     station->paths = addPathList(station->paths, path);
 }
 
