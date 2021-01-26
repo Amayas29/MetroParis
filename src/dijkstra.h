@@ -3,6 +3,14 @@
 
 #include "line.h"
 
-ListStations *dijkstra(Station **stations, Line **lines, int src, int dest);
+typedef struct _node {
+    int previous;
+    int current;
+    int value;
+    struct _node *next;
+} Node;
+
+ListStations *dijkstraTime(Station **stations, Line **lines, int src, int dest);
+ListStations *dijkstraDistance(Station **stations, Line **lines, int src, int dest);
 
 #endif
