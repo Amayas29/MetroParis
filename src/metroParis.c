@@ -6,7 +6,7 @@ int main(void) {
     int numbre = 0;
     ListStations *list = NULL;
 
-    Line **lines = readLines("lines.db", &numbre, &list);
+    Line **lines = readLines("../ressources/lines.db", &numbre, &list);
     if(lines) {
 
         //for(int i = 0; i < numbre; i++)
