@@ -26,7 +26,7 @@ int main(void) {
     ListStations *d = dijkstraTime(tab, numberStations, lines, 2, 190);
 
     for(ListStations *t = d; t; t = t->next) 
-        printf("\t%s\n", t->station->name);
+        printf("\t%s\n ", t->station->name);
     
     destroyListStations(d);
     
