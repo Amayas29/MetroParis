@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "dijkstra.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "line.h": "c",
+        "station.h": "c",
+        "path.h": "c"
     }
 }
