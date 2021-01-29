@@ -11,29 +11,21 @@ int main(void) {
     Line **lines = readLines("../ressources/lines.db", &numbre, &list);
 
     int numberStations = 0;
-    Station ** tab = buildMetroStructure(list, &numberStations);
-    
-    // char buf[100];
-    // printf("Donner ville : ");
-    // fgets(buf, 100, stdin);
-    // buf[strlen(buf) - 1] = '\0';
+    Station ** stations = buildMetroStructure(list, &numberStations);
 
-    // Station *s = getStation(list, buf);
-    // printf("%d %s\n", s->id, s->name);
-    // Station *m = tab[s->id];
-    // printf("%d %s\n", m->id, m->name);
+    Node *nodes = dijkstraDistance(stations, numberStations, lines, 2, 190);
+    Node *p = nodes;
 
-    ListStations *d = dijkstraTime(tab, numberStations, lines, 2, 190);
+    // for(; p; p = p->next)
+    //     printf("%s - %s\n", stations[p->current]->name, lines[p->line - 1]->name);
 
-    for(ListStations *t = d; t; t = t->next) 
-        printf("\t%s\n ", t->station->name);
+    printPath(nodes, stations, lines);
+    destroyNodes(nodes);
     
-    destroyListStations(d);
-    
-    free(tab);
+    free(stations);
     destroyListStations(list);
 
-        if(lines) {
+    if(lines) {
         for(int i = 0; i < numbre; i++)
             destoryLine(lines[ i ]);
         free(lines);

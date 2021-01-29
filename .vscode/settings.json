@@ -6,6 +6,7 @@
         "stdlib.h": "c",
         "line.h": "c",
         "station.h": "c",
-        "path.h": "c"
+        "path.h": "c",
+        "metro.h": "c"
     }
 }
