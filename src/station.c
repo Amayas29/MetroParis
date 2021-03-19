@@ -1,16 +1,17 @@
+#include "station.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "station.h"
 
-Station *createStation(int id, char *name) {
-    if(!name) {
+Station *create_station(int id, char *name) {
+    if (!name) {
         fprintf(stderr, "The name of the station is not valid");
         return NULL;
     }
 
     Station *station = malloc(sizeof(Station));
-    if(!station) {
+    if (!station) {
         fprintf(stderr, "Allocation problem");
         return NULL;
     }
@@ -21,63 +22,62 @@ Station *createStation(int id, char *name) {
     return station;
 }
 
-void addPath(Station *station, Path *path) {
-    if(!station) {
-        destroyPaths(path);
+void add_path(Station *station, Path *path) {
+    if (!station) {
+        destroy_paths(path);
         return;
     }
-    
-    station->paths = addPathList(station->paths, path);
+
+    station->paths = add_path_list(station->paths, path);
 }
 
-void destroyStation(Station *station) {
-
-    if(!station) return;
+void destroy_station(Station *station) {
+    if (!station) return;
 
     free(station->name);
-    destroyPaths(station->paths);
+    destroy_paths(station->paths);
     free(station);
 }
 
-Station *addStationToList(ListStations **list, char *stationName) {
-    if(!stationName) return NULL;
+Station *add_station_to_list(ListStations **list, char *station_name) {
+    if (!station_name) return NULL;
 
     int id = 0;
     ListStations *ls = *list;
-    for(; ls; ls = ls->next, id++)
-        if(strcmp(ls->station->name, stationName) == 0)
+    for (; ls; ls = ls->next, id++)
+        if (strcmp(ls->station->name, station_name) == 0)
             return ls->station;
 
     ListStations *new = malloc(sizeof(ListStations));
-    if(!new) return NULL;
+    if (!new) return NULL;
 
-    new->station = createStation(id, stationName);
+    new->station = create_station(id, station_name);
     new->next = *list;
     *list = new;
-    
+
     return new->station;
 }
 
-void destroyListStations(ListStations *list) {
-
+void destroy_list_stations(ListStations *list) {
     ListStations *tmp = NULL;
-    for(; list; ) {
+    for (; list;) {
         tmp = list->next;
-        destroyStation(list->station);
+        destroy_station(list->station);
         free(list);
         list = tmp;
     }
 }
 
-int getNumberStations(ListStations *list) {
+int get_number_stations(ListStations *list) {
     int number = 0;
-    for(; list; list = list->next, number++);
+    for (; list; list = list->next, number++)
+        ;
     return number;
 }
 
-Station *getStation(ListStations *list, char *stationName) {
-    for(; list; list = list->next)
-        if(strcmp(list->station->name, stationName) == 0)
+Station *get_station(ListStations *list, char *station_name) {
+    for (; list; list = list->next)
+        if (strcmp(list->station->name, station_name) == 0)
             return list->station;
 
     return NULL;

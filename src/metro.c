@@ -1,25 +1,24 @@
+#include "metro.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "metro.h"
 
-Station **buildMetroStructure(ListStations *list, int *numberStations) {
-    
-    *numberStations = getNumberStations(list);
-    if(!*numberStations) return NULL;
+Station **build_metro_structure(ListStations *list, int *number_stations) {
+    *number_stations = get_number_stations(list);
+    if (!*number_stations) return NULL;
 
-    Station **tab = malloc(sizeof(Station *) * *numberStations);
-    if(!tab) {
+    Station **tab = malloc(sizeof(Station *) * *number_stations);
+    if (!tab) {
         fprintf(stderr, "Allocation problem");
         return NULL;
     }
 
-    for(; list; list = list->next)
-        tab[ list->station->id ] = list->station;
+    for (; list; list = list->next)
+        tab[list->station->id] = list->station;
 
     return tab;
 }
 
-void reducePath(ListStations *list) {
-    
+void reduce_path(ListStations *list) {
 }

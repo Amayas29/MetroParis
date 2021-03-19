@@ -3,6 +3,7 @@
 
 #include "line.h"
 
-Station **buildMetroStructure(ListStations *list, int *number);
-void reducePath(ListStations *list);
+Station **build_metro_structure(ListStations *list, int *number);
+void reduce_path(ListStations *list);
+
 #endif

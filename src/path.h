@@ -2,13 +2,13 @@
 #define __PATH_H_
 
 typedef struct _path {
-   int nextStation;
-   int correspondingLine;
-   struct _path *next;
+    int next_station;
+    int corresponding_line;
+    struct _path *next;
 } Path;
 
-Path *createPath(int nextStation, int correspondingLine);
-void destroyPaths(Path *path);
-Path *addPathList(Path *list, Path *new);
+Path *create_path(int next_station, int corresponding_line);
+void destroy_paths(Path *path);
+Path *add_path_list(Path *list, Path *new);
 
 #endif

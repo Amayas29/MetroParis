@@ -14,12 +14,12 @@ typedef struct _listStations {
     struct _listStations *next;
 } ListStations;
 
-Station *createStation(int id, char *name);
-void addPath(Station *station, Path *path);
-void destroyStation(Station *station);
-Station *addStationToList(ListStations **list, char *stationName);
-void destroyListStations(ListStations *list);
-int getNumberStations(ListStations *list);
-Station *getStation(ListStations *list, char *stationName);
+Station *create_station(int id, char *name);
+void add_path(Station *station, Path *path);
+void destroy_station(Station *station);
+Station *add_station_to_list(ListStations **list, char *station_name);
+void destroy_list_stations(ListStations *list);
+int get_number_stations(ListStations *list);
+Station *get_station(ListStations *list, char *station_name);
 
 #endif

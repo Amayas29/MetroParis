@@ -8,26 +8,26 @@ int main(void) {
     int numbre = 0;
     ListStations *list = NULL;
 
-    Line **lines = readLines("../ressources/lines.db", &numbre, &list);
+    Line **lines = read_lines("../ressources/lines.db", &numbre, &list);
 
-    int numberStations = 0;
-    Station ** stations = buildMetroStructure(list, &numberStations);
+    int number_stations = 0;
+    Station ** stations = build_metro_structure(list, &number_stations);
 
-    Node *nodes = dijkstraDistance(stations, numberStations, lines, 2, 190);
+    Node *nodes = dijkstra_distance(stations, number_stations, lines, 2, 190);
     Node *p = nodes;
 
     // for(; p; p = p->next)
     //     printf("%s - %s\n", stations[p->current]->name, lines[p->line - 1]->name);
 
-    printPath(nodes, stations, lines);
-    destroyNodes(nodes);
+    print_path(nodes, stations, lines);
+    destroy_nodes(nodes);
     
     free(stations);
-    destroyListStations(list);
+    destroy_list_stations(list);
 
     if(lines) {
         for(int i = 0; i < numbre; i++)
-            destoryLine(lines[ i ]);
+            destory_line(lines[ i ]);
         free(lines);
     }
 

@@ -6,13 +6,13 @@
 typedef struct _line {
     char *name;
     int id;
-    int averageDist;
-    int averageTime;
+    int average_dist;
+    int average_time;
 } Line;
 
-Line *createLine(char *name, int id, int averageDist, int averageTime);
-Line **readLines(char *fileName, int *number, ListStations **list);
-void destoryLine(Line *line);
-void printLigne(Line *line);
+Line *create_line(char *name, int id, int average_dist, int average_time);
+Line **read_lines(char *fileName, int *number, ListStations **list);
+void destory_line(Line *line);
+void print_ligne(Line *line);
 
 #endif

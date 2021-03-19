@@ -11,9 +11,9 @@ typedef struct _node {
     struct _node *next;
 } Node;
 
-Node *dijkstraTime(Station **stations, int numberStations, Line **lines, int src, int dest);
-Node *dijkstraDistance(Station **stations, int numberStations, Line **lines, int src, int dest);
-void destroyNodes(Node *nodes);
-void printPath(Node *nodes, Station **stations, Line **lines);
+Node *dijkstra_time(Station **stations, int number_stations, Line **lines, int src, int dest);
+Node *dijkstra_distance(Station **stations, int number_stations, Line **lines, int src, int dest);
+void destroy_nodes(Node *nodes);
+void print_path(Node *nodes, Station **stations, Line **lines);
 
 #endif
